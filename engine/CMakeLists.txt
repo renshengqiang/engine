@@ -11,11 +11,15 @@ set(ENGINE_SRCS
     src/EngineRenderOp.cpp
     src/EngineRenderWindow.cpp
     src/EngineTexture.cpp
-    src/EngineSubMesh.cpp
-    src/EngineMesh.cpp
     src/effect/EngineEffect.cpp
     src/effect/EngineSimpleMeshEffect.cpp
     src/effect/EngineParticleSystemEffect.cpp
+    src/effect/EngineEffectManager.cpp
+    src/EngineMesh.cpp
+    src/EngineSubMesh.cpp
+    src/EngineMeshManager.cpp
+    src/EngineEntity.cpp
+    src/EngineSubEntity.cpp
     src/EngineNode.cpp
     src/EngineSceneNode.cpp
     src/EngineMoveableObject.cpp
@@ -28,13 +32,14 @@ set(ENGINE_SRCS
 
 add_library(engine SHARED ${ENGINE_SRCS})
 set_target_properties(engine PROPERTIES VERSION 0.0 SOVERSION 0)
-target_link_libraries(engine assimp Magick++ GLEW SDL m pthread stdc++)
+target_link_libraries(engine assimp Magick++ SDL GLEW GL m pthread stdc++)
 
 set(HEADERS
     include/UtilMutexLock.h
     include/UtilCondition.h
     include/UtilThread.h
     include/UtilTimer.h
+    include/UtilSingleton.h
     include/EngineMath.h
     include/EngineVector.h
     include/EngineQuaternion.h
@@ -44,11 +49,15 @@ set(HEADERS
     include/EngineRenderOp.h
     include/EngineRenderWindow.h
     include/EngineTexture.h
-    include/EngineSubMesh.h
-    include/EngineMesh.h
     include/EngineEffect.h
     include/EngineSimpleMeshEffect.h
     include/EngineParticleSystem.h
+    include/EngineEffectManager.h
+    include/EngineMesh.h
+    include/EngineSubMesh.h
+    include/EngineMeshManager.h
+    include/EngineEntity.h
+    include/EngineSubEntity.h
     include/EngineNode.h
     include/EngineSceneNode.h
     include/EngineMoveableObject.h
@@ -58,5 +67,6 @@ set(HEADERS
     include/EngineFrameListener.h
     include/EngineRoot.h
     include/EngineSceneManager.h
+    include/EngineRenderable.h
     )
 install(FILES ${HEADERS} DESTINATION include/3dengine) 

@@ -27,14 +27,14 @@ std::string _getDir(const std::string filename)
 namespace Engine
 {
 Mesh::Mesh(const std::string &fileName):
-	m_name(fileName),
-	m_finalized(false)
+	m_name(fileName)
 {
 	m_AABB = AxisAlignedBox(AxisAlignedBox::EXTENT_FINITE);
 }
 
 Mesh::~Mesh()
 {
+	//submeshÁô¸øsubentity È¥ÊÍ·Å
 }
 
 bool Mesh::load()
@@ -106,6 +106,36 @@ bool Mesh::load()
 	Vector3f max = m_AABB.getMaximum();
 	printf("AABB min(%f %f %f), max(%f %f %f)\n", min.x, min.y, min.z, max.x, max.y, max.z);
 
+
+	importer.FreeScene();
+	return true;
+}
+
+void Mesh::addSubMesh(SubMesh *pSubMesh)
+{
+	m_subMeshes.push_back(pSubMesh);
+}
+
+SubMesh	*Mesh::getSubMesh(int index)
+{
+	if(m_subMeshes.size()  > (unsigned)index)
+	{
+		return m_subMeshes[index];
+	}
+	return NULL;
+}
+
+/// used by rendering thread
+bool Mesh::_finalize()
+{
+	for(unsigned int i=0; i < m_subMeshes.size(); ++i)
+	{
+		if(m_subMeshes[i]->_finalize() == false)
+		{
+			fprintf(stderr, "ERROR Mesh::_finalize: compile Mesh name '%s' error\n", m_name.c_str());
+			return false;
+		}
+	}
 	return true;
 }
 
@@ -113,10 +143,7 @@ void Mesh::render(SimpleMeshEffect &effect)
 {
 	for(unsigned int i=0; i < m_subMeshes.size(); ++i)
 	{
-		if(m_finalized == false)
-			m_subMeshes[i]->finalize();
 		m_subMeshes[i]->render(effect);
 	}
-	m_finalized = true;
 }
 }

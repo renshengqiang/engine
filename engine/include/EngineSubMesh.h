@@ -55,11 +55,12 @@ public:
 	
 	//增加骨骼绑定(index 是顶点索引boneId 是骨骼节点索引 weight骨骼对顶点影响权重)
 	void addBoneData(int index, unsigned short boneId, float weight);
-	
-	//编译为FBO，使用硬件加速渲染
-	void finalize();
 
-	//渲染操作
+	/// 下面两个函数都是只能在渲染线程中使用的
+	/// 编译为FBO，使用硬件加速渲染
+	bool _finalize();
+
+	/// 渲染操作
 	void render(SimpleMeshEffect& effect);
 	
 private:

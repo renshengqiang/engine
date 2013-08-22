@@ -1,5 +1,6 @@
 #ifndef _ENGINE_SCENE_MANAGER_H
 #define _ENGINE_SCENE_MANAGER_H
+#include "EngineMesh.h"
 
 namespace Engine
 {
@@ -18,7 +19,7 @@ public:
 	void render();
 private:
 	Camera	*mp_camera;
-	Mesh	*mp_mesh;
+	MeshPtr	m_meshPtr;
 	bool		m_initialised;
 	SimpleMeshEffect *mp_effect;
 };

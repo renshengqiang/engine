@@ -8,7 +8,7 @@ DemoApp::DemoApp():
 	mp_renderingWindow(NULL),
 	mp_sceneManager(NULL)
 {
-	mp_root = new Root();
+	mp_root = new Engine::Root();
 	mp_renderingWindow = mp_root->createRenderWindow(800, 600, false);
 	mp_root->addFrameListener(this);
 	mp_sceneManager = mp_root->createSceneManager(Engine::Root::GENERAL_MANAGER, "g-manager");

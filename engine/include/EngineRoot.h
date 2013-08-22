@@ -4,6 +4,7 @@
 #include <UtilMutexLock.h>
 #include <UtilCondition.h>
 #include <UtilTimer.h>
+#include <UtilSingleton.h>
 #include <map>
 #include <set>
 #include <deque>
@@ -14,7 +15,9 @@ namespace Engine
 class SceneManager;
 class RenderWindow;
 class FrameListener;
-class Root
+class MeshManager;
+class EffectManager;
+class Root: public Util::Singleton<Root>
 {
 public:
 	/// Bitmask containing scene types
@@ -68,7 +71,7 @@ public:
 	
 	static void* renderThreadFunc(void *);
 private:
-	RenderWindow*		mp_renderWindow;
+	RenderWindow		*mp_renderWindow;
 		
 	Util::Thread		m_renderingThread;
 	
@@ -86,6 +89,9 @@ private:
 	float				m_frameSmoothingTime;
 	TimeQueue			m_timeQueue;
 	Util::Timer			m_timer;
+
+	MeshManager			*mp_meshManager;
+	EffectManager		*mp_effectManager;
 };
 }
 

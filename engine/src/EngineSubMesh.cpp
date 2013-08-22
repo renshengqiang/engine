@@ -18,10 +18,16 @@ namespace Engine
 		if(mp_vertexObject)
 		{
 			DestroyVertexObject(mp_vertexObject);
+			free(mp_vertexObject);
 		}
 		if(mp_indexObject)
 		{
 			DestroyIndexObject(mp_indexObject);
+			free(mp_indexObject);
+		}
+		if(mp_pixelObject)
+		{
+			free(mp_pixelObject);
 		}
 		if(mp_texture)
 		{
@@ -84,7 +90,7 @@ namespace Engine
 	}
 	
 	//编译为FBO，使用硬件加速渲染
-	void SubMesh::finalize()
+	bool SubMesh::_finalize()
 	{
 		mp_vertexObject = CreateVertexObject(COORD_3|TEXTURE_2, m_coordVec.size());
 		VertexObjectPushElementAll(mp_vertexObject, COORD_3, (float*)&m_coordVec[0]);
@@ -97,6 +103,8 @@ namespace Engine
 		bool ret = mp_texture->load();
 		assert(ret == true);
 		mp_pixelObject = CreatePixelObject2(mp_texture);
+
+		return true;
 	}
 
 	//渲染操作

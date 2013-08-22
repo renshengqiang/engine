@@ -3,11 +3,14 @@
 #include "EngineSceneManager.h"
 #include "EngineRenderOp.h"
 #include "EngineFrameListener.h"
+#include "EngineMeshManager.h"
+#include "EngineEffectManager.h"
 #include <unistd.h>//sleep
 #include <stdio.h>
 
 namespace Engine
 {
+template<> Root *Util::Singleton<Root>::sp_instance = 0;
 Root::Root():
 	mp_renderWindow(NULL),
 	m_renderingThread(renderThreadFunc),
@@ -18,6 +21,8 @@ Root::Root():
 	m_renderingEmptyCond(m_renderQueueFullMutex),
 	m_frameSmoothingTime(0)
 {
+	mp_meshManager = new MeshManager();
+	mp_effectManager = new EffectManager();
 }	
 	
 Root::~Root()
@@ -26,9 +31,14 @@ Root::~Root()
 	for(SceneManagerIter iter = m_sceneManagerMap.begin(); 
 			iter != m_sceneManagerMap.end(); ++iter)
 	{
-		delete iter->second;
+		if(iter->second)
+			delete iter->second;
 	}
 	m_sceneManagerMap.clear();
+
+	//destroy all resouce managers
+	if(mp_meshManager) delete mp_meshManager;
+	if(mp_effectManager) delete mp_effectManager;
 }
 
 RenderWindow* Root::createRenderWindow(int width, int height, bool fullScreen)
@@ -175,13 +185,27 @@ void* Root::renderThreadFunc(void *p)
 	pRoot->m_windowCondtion.notify();
 
 	while(true)
-	{
+	{	
 		pRoot->m_renderQueueFullMutex.lock();
 		while(pRoot->m_renderQueueFull == false)
 			pRoot->m_renderQueueFullCond.wait();
 		pRoot->m_renderQueueFull = false;
 		pRoot->m_renderQueueFullMutex.unlock();
 		pRoot->m_renderingEmptyCond.notify();
+
+		/// 将涉及硬件相关操作在此初始化完毕
+		/// 开始初始化可能较为费时
+		/// 后面加入新资源时才会进行新的初始化
+		if(pRoot->mp_meshManager)
+		{
+			if(pRoot->mp_meshManager->_finalize() == false)
+				break;
+		}
+		if(pRoot->mp_effectManager)
+		{
+			if(pRoot->mp_effectManager->_finalize() == false)
+				break;
+		}
 		
 		ClearBuffer();
 
@@ -192,6 +216,7 @@ void* Root::renderThreadFunc(void *p)
 		
 		pWindow->swapBuffer();
 	}
+	return NULL;
 }
 
 }

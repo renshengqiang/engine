@@ -17,10 +17,7 @@ namespace Engine
 class Plane
 {
 friend class Frustum;
-private:
-	Vector3f 	m_normal;
-	float		m_distance;
-	
+
 public:
 	inline Plane():
 		m_normal(Vector3f(0, 1, 0)),
@@ -195,6 +192,10 @@ public:
 	{
 	    return (rhs.m_distance != m_distance || rhs.m_normal != m_normal);
 	}
+	
+public:
+	Vector3f	m_normal;
+	float		m_distance;
 };
 typedef std::vector<Plane> PlaneList;
 }
