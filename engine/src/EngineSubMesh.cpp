@@ -106,10 +106,4 @@ namespace Engine
 
 		return true;
 	}
-
-	//äÖÈ¾²Ù×÷
-	void SubMesh::render(SimpleMeshEffect& effect)
-	{
-		DrawSimpleMesh(mp_indexObject, mp_vertexObject, mp_pixelObject, effect);
-	}
 }

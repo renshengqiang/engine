@@ -31,6 +31,10 @@ public:
 	SubMesh();
 	~SubMesh();
 
+
+	VERTEX_OBJ	*getVertexObject() const { return mp_vertexObject;}
+	INDEX_OBJ	*getIndexObject() const { return mp_indexObject;}
+	PIXEL_OBJ	*getPixelObject() const { return mp_pixelObject;}
 	//顶点数量
 	unsigned getVertexNum();
 	
@@ -59,9 +63,6 @@ public:
 	/// 下面两个函数都是只能在渲染线程中使用的
 	/// 编译为FBO，使用硬件加速渲染
 	bool _finalize();
-
-	/// 渲染操作
-	void render(SimpleMeshEffect& effect);
 	
 private:
 	//CPU中存放的数据，用于初始化

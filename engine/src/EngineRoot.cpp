@@ -151,6 +151,11 @@ float Root::_calcFrameTime()
 	return float(m_timeQueue.back() - m_timeQueue.front()) / ((m_timeQueue.size()-1) * 1000); 
 }
 
+/// 下面的是两个线程的循环函数
+/// startRendering是主循环的函数
+/// 它调用所有的SceneManger生产一个渲染队列，然后通知另一个线程
+/// 渲染线程作为消费者必须等待渲染队列准备好才可以渲染
+/// 主线程的准备渲染队列的操作可以和渲染线程的渲染操作同时进行，从而提高渲染效率
 void Root::startRendering()
 {
 	assert(mp_renderWindow != NULL);
@@ -161,6 +166,12 @@ void Root::startRendering()
 			m_renderingThread.cancel();
 			break;
 		}
+
+		for(SceneManagerIter it = m_sceneManagerMap.begin(); it!=m_sceneManagerMap.end(); ++it)
+		{
+			it->second->_findVisibleObjects();
+		}
+		
 		m_renderQueueFullMutex.lock();
 		while(m_renderQueueFull == true)
 			m_renderingEmptyCond.wait();

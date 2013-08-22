@@ -1,23 +1,26 @@
 #ifndef _ENGINE_ENTITY_H
 #define _ENGINE_ENTITY_H
 #include <EngineMoveableObject.h>
+#include <EngineSubEntity.h>
 #include <EngineMesh.h>
 #include <EngineAxisAlignedBox.h>
-#include <EngineSubEntity.h>
+#include <EngineRenderQueue.h>
 #include <string>
 
 namespace Engine
 {
+class Matrix4f;
 class Entity: public MoveableObject
 {
-typedef std::vector<SubEntityPtr> SubEntityVec;
+typedef std::vector<RenderablePtr> SubEntityVec;
 typedef SubEntityVec::iterator		SubEntityIter;
 
 public:
 	Entity();
 	Entity(const std::string& meshFile);
 	~Entity();
-	
+
+	void addToRenderQueue(const Matrix4f &transMatrix, RenderQueue &renderQueue);
 	virtual const AxisAlignedBox& getBoundingBox() const { return m_boundingBox;}
 	void setMeshPtr(MeshPtr mesh);
 	

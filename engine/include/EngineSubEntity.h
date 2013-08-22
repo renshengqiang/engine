@@ -1,13 +1,13 @@
 #ifndef _ENGINE_SUB_ENTITY_H
 #define _ENGINE_SUB_ENTITY_H
 #include <EngineRenderable.h>
-#include <tr1/memory>
 
 namespace Engine
 {
 class Entity;
 class SubMesh;
 class Effect;
+class Matrix4f;
 
 //SubEntity主要是用来给渲染线程使用的
 //这样当主线程中删除了Entity时，由于Entity里面保存的是shared_ptr<SubEntity>也不会导致渲染线程段错误
@@ -18,13 +18,12 @@ public:
 	SubEntity(Entity *parentEntity, SubMesh *subMesh);
 	~SubEntity();
 	
-	Effect *getEffect();
-	void render();
+	virtual Effect *getEffect() const;
+	virtual void render(const Matrix4f &trans) const;
 private:
 	Entity	*mp_parentEntity;
 	SubMesh	*mp_subMesh;
 };
-typedef std::tr1::shared_ptr<SubEntity> SubEntityPtr;
 }
 
 #endif

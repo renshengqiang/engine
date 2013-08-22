@@ -26,6 +26,13 @@ Entity::~Entity()
 {
 }
 
+void Entity::addToRenderQueue(const Matrix4f &transMatrix, RenderQueue &renderQueue)
+{
+	for(unsigned i=0; i<m_subEntityVec.size(); ++i)
+	{
+		renderQueue.addItem(transMatrix, m_subEntityVec[i]);
+	}
+}
 void Entity::setMeshPtr(MeshPtr mesh)
 {
 	m_mesh = mesh;

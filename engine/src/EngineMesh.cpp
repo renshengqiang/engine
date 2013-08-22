@@ -138,12 +138,4 @@ bool Mesh::_finalize()
 	}
 	return true;
 }
-
-void Mesh::render(SimpleMeshEffect &effect)
-{
-	for(unsigned int i=0; i < m_subMeshes.size(); ++i)
-	{
-		m_subMeshes[i]->render(effect);
-	}
-}
 }

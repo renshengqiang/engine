@@ -35,8 +35,6 @@ public:
 	/// used by rending thread
 	bool _finalize();
 	
-	void render(SimpleMeshEffect& effect);
-	
 private:
 	std::string m_name;							//mesh名
 	AxisAlignedBox m_AABB;						//局部坐标的包围盒

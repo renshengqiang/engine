@@ -67,6 +67,7 @@ set(HEADERS
     include/EngineFrameListener.h
     include/EngineRoot.h
     include/EngineSceneManager.h
+    include/EngineRenderQueue.h
     include/EngineRenderable.h
     )
 install(FILES ${HEADERS} DESTINATION include/3dengine) 
