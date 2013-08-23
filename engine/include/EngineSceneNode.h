@@ -6,6 +6,9 @@
 namespace Engine
 {
 class MoveableObject;
+class Camera;
+class RenderQueue;
+
 class SceneNode : public Node
 {
 public:
@@ -13,7 +16,7 @@ public:
 	~SceneNode();
 	
 	SceneNode *createChildSceneNode(const std::string &name);
-
+	
 	void attachObject(MoveableObject *pObject);
 	void detachObject(void);
 	MoveableObject* getAttachedMoveableObject(void);
@@ -23,12 +26,14 @@ public:
 		Node::_update(updateChildren, parentHasChanged);
 		_updateBounds();
 	}
+
+	void _findVisibleObjects(Camera *pCamera, RenderQueue &renderQueue);
 	
 	const AxisAlignedBox& getWorldBoundingBox() const
 	{
 		return m_worldAABB;
 	}
-	
+
 private:
 	virtual void _needUpdate(bool forceParentUpdate = false);
 

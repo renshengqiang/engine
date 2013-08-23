@@ -41,9 +41,9 @@ Root::~Root()
 	if(mp_effectManager) delete mp_effectManager;
 }
 
-RenderWindow* Root::createRenderWindow(int width, int height, bool fullScreen)
+RenderWindow* Root::createRenderWindow(const char *title, int width, int height, bool fullScreen)
 {
-	mp_renderWindow = new RenderWindow(width, height);
+	mp_renderWindow = new RenderWindow(title, width, height);
 
 	//创建渲染线程并等待窗口初始化完毕
 	m_renderingThread.start(this);
@@ -169,7 +169,7 @@ void Root::startRendering()
 
 		for(SceneManagerIter it = m_sceneManagerMap.begin(); it!=m_sceneManagerMap.end(); ++it)
 		{
-			it->second->_findVisibleObjects();
+			it->second->_prepareRenderQueue();
 		}
 		
 		m_renderQueueFullMutex.lock();
@@ -222,7 +222,7 @@ void* Root::renderThreadFunc(void *p)
 
 		for(SceneManagerIter it = pRoot->m_sceneManagerMap.begin(); it!=pRoot->m_sceneManagerMap.end(); ++it)
 		{
-			it->second->render();
+			it->second->_render();
 		}
 		
 		pWindow->swapBuffer();

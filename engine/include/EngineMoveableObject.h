@@ -6,7 +6,8 @@ namespace Engine
 {
 class Node;
 class SceneNode;
-
+class RenderQueue;
+class Matrix4f;
 //MoveableObject就是可以根据场景节点到处移动的节点
 class MoveableObject
 {
@@ -58,7 +59,10 @@ public:
 	{	
 		m_visible = visible;
 	}
-	
+
+	//SceneManager使用这一函数将Moveable中的Renderable加入到渲染队列中
+	virtual void addToRenderQueue(const Matrix4f &transMatrix, RenderQueue &renderQueue){};
+
 	//返回局部坐标系的包围盒
 	virtual const AxisAlignedBox& getBoundingBox(void) const { return m_boundingBox;}
 	

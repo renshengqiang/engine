@@ -1,5 +1,6 @@
 #include "EngineSceneNode.h"
 #include "EngineMoveableObject.h"
+#include "EngineCamera.h"
 
 namespace Engine
 {
@@ -68,4 +69,21 @@ void SceneNode::_updateBounds(void)
 		m_worldAABB.transformAffine(_getFullTransform());
 	}
 }
+
+void SceneNode::_findVisibleObjects(Camera *pCamera, RenderQueue &renderQueue)
+{
+	if(mp_attachedMoveableObject && mp_attachedMoveableObject->visible())
+	{
+		if(pCamera->isVisible(getWorldBoundingBox(), NULL))
+		{
+			mp_attachedMoveableObject->addToRenderQueue(pCamera->getProjViewMatrix() * _getFullTransform(), renderQueue);
+		}	
+	}
+	for(ChildNodeIterator it = m_childVec.begin(); it != m_childVec.end(); ++it)
+	{
+		SceneNode *pChild = static_cast<SceneNode*>(*it);
+		pChild->_findVisibleObjects(pCamera, renderQueue);
+	}
+}
+
 }

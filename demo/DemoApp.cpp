@@ -1,5 +1,7 @@
 #include "DemoApp.h"
 #include <EngineVector.h>
+#include <EngineEntity.h>
+#include <EngineSceneNode.h>
 #include <stdio.h>
 
 DemoApp::DemoApp():
@@ -9,10 +11,10 @@ DemoApp::DemoApp():
 	mp_sceneManager(NULL)
 {
 	mp_root = new Engine::Root();
-	mp_renderingWindow = mp_root->createRenderWindow(800, 600, false);
+	mp_renderingWindow = mp_root->createRenderWindow("Demo", 800, 600, false);
 	mp_root->addFrameListener(this);
 	mp_sceneManager = mp_root->createSceneManager(Engine::Root::GENERAL_MANAGER, "g-manager");
-	mp_sceneManager->createCamera(Engine::Vector3f(0.0f, 0.0f, 0.0f), Engine::Vector3f(0.0f, 0.0f, -1.0f), Engine::Vector3f(0.0f, 1.0f, 0.0f));
+	mp_camera = mp_sceneManager->createCamera(Engine::Vector3f(0.0f, 0.0f, 0.0f), Engine::Vector3f(0.0f, 0.0f, -1.0f), Engine::Vector3f(0.0f, 1.0f, 0.0f));
 }
 	
 DemoApp::~DemoApp()
@@ -21,7 +23,14 @@ DemoApp::~DemoApp()
 
 void DemoApp::createScene()
 {
-
+	mp_camera->translate(Vector3f(0, 0, 200));
+	Engine::Entity *pEntity = new Engine::Entity("./media/models/phoenix_ugv.md2");
+	mp_sceneManager->getRootNode()->attachObject(pEntity);
+	Engine::SceneNode *pNode = mp_sceneManager->getRootNode()->createChildSceneNode("boblamp");
+	pEntity = new Engine::Entity("./media/models/boblampclean.md5mesh");
+	pNode->attachObject(pEntity);
+	pNode->translate(100, 0, -100);
+	pNode->rotate(Engine::Vector3f(1, 0, 0), -90);
 }
 
 void DemoApp::run()

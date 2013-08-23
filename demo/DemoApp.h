@@ -3,6 +3,7 @@
 #include <EngineFrameListener.h>
 #include <EngineRoot.h>
 #include <EngineSceneManager.h>
+#include <EngineCamera.h>
 #include <SDL/SDL.h>
 
 using namespace Engine;
@@ -26,6 +27,7 @@ private:
 	Root *mp_root;
 	RenderWindow *mp_renderingWindow;
 	SceneManager *mp_sceneManager;
+	Camera	*mp_camera;
 };
 
 #endif

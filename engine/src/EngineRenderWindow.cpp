@@ -49,7 +49,8 @@ bool RenderWindow::initWindow(void)
 		destroy();
 		return false;
 	}
-	
+
+	SDL_WM_SetCaption(m_title.c_str(), 0);
 	//initial glew
 	if(InitGlew()==false)
 	{

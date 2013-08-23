@@ -19,6 +19,7 @@ public:
 
 	Iterator begin(){ return m_renderItemVec.begin();}
 	Iterator end(){ return m_renderItemVec.end();}
+	int size(){ return m_renderItemVec.size(); }
 
 	void addItem(const Matrix4f &trans, RenderablePtr &renderable)
 	{

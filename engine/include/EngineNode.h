@@ -92,8 +92,11 @@ public:
 	*/
 	Node *createChild(const std::string &name);
 
+	/// 删除所有孩子结点
+	void  detachAllChildren();
+	
 	//删除一个child node
-	void removeChild(Node *child);
+	void detachChild(Node *child);
 	
 	unsigned short numChildren(void) const;
 	Node *getChild(unsigned short index) const;

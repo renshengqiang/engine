@@ -271,13 +271,10 @@ VERTEX_OBJ* CreateVertexObject(int elements,  int n)
 		obj->object = INVALID_OBJECT_LOCATION;
 		obj->meshData.meshData = malloc(stride * n);
 		obj->meshData.pushedNum = -1;
-		
-#ifndef _BUGING_
-		printf("num %d stride %d\n", obj->numVertex, obj->stride);
-#endif
+
 		if(obj->meshData.meshData== NULL)
 		{
-			fprintf(stderr, "CreateVertexObject : memery allocation error\n");
+			fprintf(stderr, "ERROR CreateVertexObject : memery allocation error\n");
 			free(obj);
 			return NULL;
 		}
@@ -285,7 +282,7 @@ VERTEX_OBJ* CreateVertexObject(int elements,  int n)
 	}
 	else
 	{
-		fprintf(stderr, "CreateVertexObject : memory allocation error\n");
+		fprintf(stderr, "ERROR CreateVertexObject : memory allocation error\n");
 		return NULL;
 	}
 }
@@ -371,7 +368,7 @@ void VertexObjectPushElementAll(VERTEX_OBJ *vobj, int element, float *p)
 	int offset, size, i;
 	if(_CheckVertexObject(vobj)==0)
 	{
-		fprintf(stderr, "VertexObjectPushElement : Not a valid VERTEX_OBJ\n");
+		fprintf(stderr, "ERROR VertexObjectPushElement : Not a valid VERTEX_OBJ\n");
 		return;
 	}
 	_GetElementSizeOffset(vobj, element, &offset, &size);
@@ -388,7 +385,7 @@ void VertexObjectEnd(VERTEX_OBJ *vobj)
 {
 	if(_CheckVertexObject(vobj)==0)
 	{
-		fprintf(stderr, "VertexObjectPushElement : Not a valid VERTEX_OBJ\n");
+		fprintf(stderr, "ERROR VertexObjectPushElement : Not a valid VERTEX_OBJ\n");
 		return;
 	}
 	glGenBuffers(1, &(vobj->object));
@@ -412,7 +409,7 @@ void DestroyVertexObject(VERTEX_OBJ *vertexObject)
 	}
 	else
 	{
-		fprintf(stderr, "DestroyVertexObject : Not a valid VERTEX_OBJ\n");
+		fprintf(stderr, "ERROR DestroyVertexObject : Not a valid VERTEX_OBJ\n");
 	}
 	return;
 }

@@ -233,7 +233,17 @@ Node *Node::_createChildImpl(const  std::string& name)
 	return newNode;
 }
 
-void Node::removeChild(Node *child)
+void Node::detachAllChildren()
+{
+	//因为所有的SceneNode都是用户创建的
+	//因此不能在这里进行销毁工作，由用户自己处理
+	for(ChildNodeIterator it = m_childUpdateVec.begin(); it != m_childUpdateVec.end(); ++ it)
+	{
+		(*it)->setParent(NULL);
+	}
+}
+
+void Node::detachChild(Node *child)
 {
 	if (child)
 	{

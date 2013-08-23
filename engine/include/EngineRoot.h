@@ -39,7 +39,7 @@ public:
 	Root();
 	~Root();
 
-	RenderWindow* createRenderWindow(int width, int height, bool fullScreen);
+	RenderWindow* createRenderWindow(const char *title, int width, int height, bool fullScreen);
 	
 	SceneManager* createSceneManager(SceneManagerType type, const std::string& name);
 	void destroySceneManager(const std::string& name);

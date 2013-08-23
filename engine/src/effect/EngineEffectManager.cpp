@@ -11,7 +11,7 @@ template<> EffectManager* Util::Singleton<EffectManager>::sp_instance = 0;
 EffectManager::EffectManager()
 {
 	addEffect("SubEntity", "./media/effects/SimpleMeshEffect.vs", "./media/effects/SimpleMeshEffect.fs");
-	//addEffect("ParticleSystem", "./media/effects/ParticleEffect.vs", "./media/effects/ParticleEffect.fs");
+	addEffect("ParticleSystem", "./media/effects/ParticleEffect.vs", "./media/effects/ParticleEffect.fs");
 }
 
 EffectManager::~EffectManager()
@@ -38,7 +38,7 @@ void EffectManager::addEffect(const std::string &type, const char *vsFile, const
 		if(type == "SubEntity")
 			pEffect = new SimpleMeshEffect(vsFile, fsFile);
 		else if(type == "ParticleSystem")
-			pEffect = new ParticleEffect(vsFile, vsFile);
+			pEffect = new ParticleEffect(vsFile, fsFile);
 		else
 		{
 			fprintf(stderr, "ERROR EfffectManager::addEffect: effect named '%s' have not implemented\n", type.c_str());
