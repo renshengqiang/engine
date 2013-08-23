@@ -4,6 +4,8 @@
 #include "EngineCamera.h"
 #include "EngineSceneNode.h"
 #include "EngineEntity.h"
+#include "EngineRaySceneQuery.h"
+#include "EngineRay.h"
 #include <stdio.h>
 
 namespace Engine
@@ -22,7 +24,7 @@ SceneManager::~SceneManager()
 	delete mp_rootNode;
 }
 
-Camera* SceneManager::createCamera(const Vector3f & pos,const Vector3f &target,const Vector3f &up)
+Camera* SceneManager::createCamera(const Vector3f &pos,const Vector3f &target,const Vector3f &up)
 {
 	if(mp_camera)
 	{
@@ -30,6 +32,13 @@ Camera* SceneManager::createCamera(const Vector3f & pos,const Vector3f &target,c
 	}
 	mp_camera = new Camera(pos, target, up);
 	return mp_camera;
+}
+
+RaySceneQuery* SceneManager::createRayQuery(const Ray &ray)
+{
+	RaySceneQuery *pQuery = new RaySceneQuery(this);
+	pQuery->setRay(ray);
+	return pQuery;
 }
 
 SceneNode *SceneManager::getRootNode()

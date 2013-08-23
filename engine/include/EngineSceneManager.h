@@ -9,13 +9,17 @@ class Vector3f;
 class Camera;
 class Entity;
 class SceneNode;
+class RaySceneQuery;
+class Ray;
 class  SceneManager
 {
 public:
 	SceneManager();
 	virtual ~SceneManager();
 	
-	Camera* createCamera(const Vector3f& pos, const Vector3f &target, const Vector3f &up);
+	virtual Camera *createCamera(const Vector3f& pos, const Vector3f &target, const Vector3f &up);
+	virtual RaySceneQuery *createRayQuery(const Ray &ray);
+	
 	SceneNode *getRootNode();
 
 	void clearScene();

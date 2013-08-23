@@ -7,6 +7,14 @@ std::pair<bool, float> Ray::intersects(const AxisAlignedBox& box) const
 {
 	if (box.isNull()) return std::pair<bool, float>(false, 0);
 	if (box.isInfinite()) return std::pair<bool, float>(true, 0);
+	
+#ifdef _DEBUG_INTERSECT_
+	Vector3f mmin, mmax;
+	mmin = box.getMinimum();
+	mmax = box.getMaximum();
+	printf("origin: (%f %f %f), dir:(%f %f %f)\n", m_origin.x, m_origin.y, m_origin.z, m_direction.x, m_direction.y, m_direction.z);
+	printf("box : min(%f %f %f) max(%f %f %f)\n", mmin.x, mmin.y, mmin.z, mmax.x, mmax.y, mmax.z);
+#endif	
 
 	float lowt = 0.0f;
 	float t;

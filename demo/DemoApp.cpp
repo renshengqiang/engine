@@ -2,7 +2,10 @@
 #include <EngineVector.h>
 #include <EngineEntity.h>
 #include <EngineSceneNode.h>
+#include <EngineRay.h>
 #include <stdio.h>
+#define WINDOW_WIDTH 800
+#define WINDOW_HEIGHT 600
 
 DemoApp::DemoApp():
 	m_quit(false),
@@ -11,7 +14,7 @@ DemoApp::DemoApp():
 	mp_sceneManager(NULL)
 {
 	mp_root = new Engine::Root();
-	mp_renderingWindow = mp_root->createRenderWindow("Demo", 800, 600, false);
+	mp_renderingWindow = mp_root->createRenderWindow("Demo", WINDOW_WIDTH, WINDOW_HEIGHT, false);
 	mp_root->addFrameListener(this);
 	mp_sceneManager = mp_root->createSceneManager(Engine::Root::GENERAL_MANAGER, "g-manager");
 	mp_camera = mp_sceneManager->createCamera(Engine::Vector3f(0.0f, 0.0f, 0.0f), Engine::Vector3f(0.0f, 0.0f, -1.0f), Engine::Vector3f(0.0f, 1.0f, 0.0f));
@@ -31,6 +34,9 @@ void DemoApp::createScene()
 	pNode->attachObject(pEntity);
 	pNode->translate(100, 0, -100);
 	pNode->rotate(Engine::Vector3f(1, 0, 0), -90);
+
+	/// create a ray scene query
+	mp_raySceneQuery = mp_sceneManager->createRayQuery(Engine::Ray());
 }
 
 void DemoApp::run()
@@ -54,6 +60,18 @@ void DemoApp::_processWindowEvents()
 			break;
 		case SDL_KEYDOWN:
 			_processKeyboardEvents(event.key.keysym);
+		case	SDL_MOUSEBUTTONDOWN:
+			Engine::Ray mouseRay = mp_camera->getCameraToViewportRay((float)event.button.x/WINDOW_WIDTH, (float)event.button.y/WINDOW_HEIGHT);
+			mp_raySceneQuery->setRay(mouseRay);
+			Engine::RaySceneQueryResult &result = mp_raySceneQuery->execute();
+			
+			Engine::RaySceneQueryResult::iterator iter;
+			for(iter=result.begin(); iter!=result.end(); iter++)
+			{
+				SceneNode *pNode = iter->pMoveable->getParentSceneNode();
+				pNode->translate(Engine::Vector3f(0, 0, -100));
+			}
+			break;
 		}	
 	}
 }

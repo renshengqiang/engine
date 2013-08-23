@@ -20,6 +20,8 @@ Entity::Entity(const std::string& meshFile)
 	{
 		m_subEntityVec[i].reset(new SubEntity(this, m_mesh->getSubMesh(i)));
 	}
+
+	m_boundingBox = m_mesh->getBoundingBox();
 }
 
 Entity::~Entity()
