@@ -73,7 +73,8 @@ protected:
 	virtual void _updateSceneGraph();
 	virtual void _applySceneAnimations();
 	virtual void _findVisibleObjects(Camera *pCamera, RenderQueue &queue);
-private:
+
+protected:
 	Camera	*mp_camera;
 	Entity	*mp_entity;
 	RenderQueue m_renderQueue[2];			//使用两个渲染队列供两个线程轮流使用

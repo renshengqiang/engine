@@ -19,7 +19,7 @@ DemoApp::DemoApp():
 	mp_root = new Engine::Root();
 	mp_renderingWindow = mp_root->createRenderWindow("Demo", WINDOW_WIDTH, WINDOW_HEIGHT, false);
 	mp_root->addFrameListener(this);
-	mp_sceneManager = mp_root->createSceneManager(Engine::Root::GENERAL_MANAGER, "g-manager");
+	mp_sceneManager = mp_root->createSceneManager(Engine::Root::OCTREE_MANAGER, "g-manager");
 	mp_camera = mp_sceneManager->createCamera(Engine::Vector3f(0.0f, 0.0f, 0.0f), Engine::Vector3f(0.0f, 0.0f, -1.0f), Engine::Vector3f(0.0f, 1.0f, 0.0f));
 }
 	
@@ -31,7 +31,7 @@ void DemoApp::createScene()
 {
 	mp_camera->translate(Vector3f(0, 0, 200));
 	Engine::Entity *pEntity = new Engine::Entity("./media/models/phoenix_ugv.md2");
-	//mp_sceneManager->getRootNode()->attachObject(pEntity);
+	mp_sceneManager->getRootNode()->attachObject(pEntity);
 	Engine::SceneNode *pNode = mp_sceneManager->getRootNode()->createChildSceneNode("boblamp");
 	pEntity = new Engine::Entity("./media/models/boblampclean.md5mesh");
 	pNode->attachObject(pEntity);

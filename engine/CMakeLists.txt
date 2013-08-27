@@ -32,6 +32,11 @@ set(ENGINE_SRCS
     src/EngineAnimationTrack.cpp
     src/EngineAnimation.cpp
     src/EngineAnimationState.cpp
+    src/octree/EngineOctree.cpp
+    src/octree/EngineOctreeCamera.cpp
+    src/octree/EngineOctreeNode.cpp
+    src/octree/EngineOctreeSceneManager.cpp
+    src/octree/EngineOctreeRaySceneQuery.cpp
     )
 
 add_library(engine SHARED ${ENGINE_SRCS})
@@ -78,5 +83,10 @@ set(HEADERS
     include/EngineAnimationTrack.h
     include/EngineAnimaton.h
     include/EngineAnimationState.h
+    include/EngineOctree.h
+    include/EngineOctreeCamera.h
+    include/EngineOctreeNode.h
+    include/EngineOctreeSceneManager.h
+    include/EngineOctreeRaySceneQuery.h
     )
 install(FILES ${HEADERS} DESTINATION include/3dengine) 

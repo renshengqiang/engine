@@ -48,9 +48,7 @@ RaySceneQueryResult& RaySceneQuery::execute(void)
 	// Clear without freeing the vector buffer
 	m_result.clear();
 
-	// Call callback version with self as listener
 	std::queue<SceneNode*> IterQueue;
-	int no_intersection = 0;
 
 	IterQueue.push(mp_sceneManager->getRootNode());
 	while(!IterQueue.empty())
@@ -70,10 +68,6 @@ RaySceneQueryResult& RaySceneQuery::execute(void)
 			if (result.first)
 			{
 				queryResult(pNode->getAttachedMoveableObject(), result.second);
-			}
-			else
-			{
-				no_intersection++;
 			}
 		}
 		

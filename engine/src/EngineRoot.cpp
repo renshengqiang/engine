@@ -1,6 +1,7 @@
 #include "EngineRoot.h"
 #include "EngineRenderWindow.h"
 #include "EngineSceneManager.h"
+#include "EngineOctreeSceneManager.h"
 #include "EngineRenderOp.h"
 #include "EngineFrameListener.h"
 #include "EngineMeshManager.h"
@@ -64,6 +65,7 @@ SceneManager* Root::createSceneManager(SceneManagerType type, const std::string&
 		pManager = new SceneManager();
 		break;
 	case OCTREE_MANAGER:
+		pManager = new OctreeSceneManager();
 		break;
 	}
 	if(pManager)
