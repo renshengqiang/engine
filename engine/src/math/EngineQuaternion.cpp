@@ -1,6 +1,7 @@
 #include "EngineQuaternion.h"
 #include "EngineVector.h"
 #include "EngineMatrix.h"
+#include <stdio.h>
 
 namespace Engine{
 
@@ -79,8 +80,8 @@ Matrix3f Quaternion::toRotationMatrix (void) const
 	而cos(r/2-180) =-cos(r/2), sin(r/2-180) =-sin(r/2)
 	所以得到的是-rkQ
 */
-Quaternion Quaternion::nlerp(float fT, const Quaternion& rkP,
-	const Quaternion& rkQ, bool shortestPath)
+Quaternion Quaternion::nlerp(float fT, const Quaternion &rkP,
+						const Quaternion &rkQ, bool shortestPath)
 {
 	Quaternion result;
 	
@@ -103,47 +104,48 @@ Quaternion Quaternion::nlerp(float fT, const Quaternion& rkP,
 	结论是: q(t) = q1*sin(1-t)(θ)/sin(θ) +q2*sin(tθ)/sin(θ)
 	因为涉及到tan的计算，所以需要对cos的值进行一个范围的判断，防止越界
 */
-Quaternion Quaternion::slerp (float fT, const Quaternion& rkP,
-	  const Quaternion& rkQ, bool shortestPath)
-  {
-	  float fCos = rkP.dotProduct(rkQ);
-	  Quaternion rkT;
+Quaternion Quaternion::slerp (float fT, const Quaternion &rkP,
+						 const Quaternion &rkQ, bool shortestPath)
+ {
+	float fCos = rkP.dotProduct(rkQ);
+	Quaternion rkT;
+	Quaternion ret;
 
-	  // Do we need to invert rotation?
-	  if (fCos < 0.0f && shortestPath)
-	  {
-		  fCos = -fCos;
-		  rkT = -rkQ;
-	  }
-	  else
-	  {
-		  rkT = rkQ;
-	  }
+	// Do we need to invert rotation?
+	if (fCos < 0.0f && shortestPath)
+	{
+		fCos = -fCos;
+		rkT = -rkQ;
+	}
+	else
+	{
+		rkT = rkQ;
+	}
 
-	  if (fabs(fCos) < 1 - msEpsilon)
-	  {
-		  // Standard case (slerp)
-		  float fSin = sqrtf(1 - fCos*fCos);
-		  float fAngle = atan2f(fSin, fCos);
-		  float fInvSin = 1.0f / fSin;
-		  float fCoeff0 = sinf((1.0f - fT) * fAngle) * fInvSin;
-		  float fCoeff1 = sinf(fT * fAngle) * fInvSin;
-		  return  rkP *fCoeff0 + rkT*fCoeff1;
-	  }
-	  else
-	  {
-		  // There are two situations:
-		  // 1. "rkP" and "rkQ" are very close (fCos ~= +1), so we can do a linear
-		  //	interpolation safely.
-		  // 2. "rkP" and "rkQ" are almost inverse of each other (fCos ~= -1), there
-		  //	are an infinite number of possibilities interpolation. but we haven't
-		  //	have method to fix this case, so just use linear interpolation here.
-		  Quaternion t =  rkP  * (1.0f - fT)+ rkT * fT ;
-		  // taking the complement requires renormalisation
-		  t.normalise();
-		  return t;
-	  }
-  }
+	if (fabs(fCos) < 1 - msEpsilon)
+	{
+		// Standard case (slerp)
+		float fSin = sqrtf(1 - fCos*fCos);
+		float fAngle = atan2f(fSin, fCos);
+		float fInvSin = 1.0f / fSin;
+		float fCoeff0 = sinf((1.0f - fT) * fAngle) * fInvSin;
+		float fCoeff1 = sinf(fT * fAngle) * fInvSin;
+		return rkP *fCoeff0 + rkT*fCoeff1;
+	}
+	else
+	{
+		// There are two situations:
+		// 1. "rkP" and "rkQ" are very close (fCos ~= +1), so we can do a linear
+		//	interpolation safely.
+		// 2. "rkP" and "rkQ" are almost inverse of each other (fCos ~= -1), there
+		//	are an infinite number of possibilities interpolation. but we haven't
+		//	have method to fix this case, so just use linear interpolation here.
+		Quaternion t =  rkP  * (1.0f - fT)+ rkT * fT ;
+		// taking the complement requires renormalisation
+		t.normalise();
+		return t;
+	}
+}
 
 Quaternion Quaternion::squad (float fT,
 	const Quaternion& rkP, const Quaternion& rkA,

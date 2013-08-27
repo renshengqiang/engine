@@ -29,6 +29,9 @@ set(ENGINE_SRCS
     src/EngineRoot.cpp
     src/EngineSceneManager.cpp
     src/EngineRaySceneQuery.cpp
+    src/EngineAnimationTrack.cpp
+    src/EngineAnimation.cpp
+    src/EngineAnimationState.cpp
     )
 
 add_library(engine SHARED ${ENGINE_SRCS})
@@ -71,5 +74,9 @@ set(HEADERS
     include/EngineRenderQueue.h
     include/EngineRenderable.h
     include/EngineRaySceneQuery.h
+    include/EngineKeyFrame.h
+    include/EngineAnimationTrack.h
+    include/EngineAnimaton.h
+    include/EngineAnimationState.h
     )
 install(FILES ${HEADERS} DESTINATION include/3dengine) 

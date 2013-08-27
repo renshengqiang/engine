@@ -21,34 +21,34 @@ static const float msEpsilon;
 public:
 	float x, y, z, w;
 	
-	inline Quaternion():
+	Quaternion():
 		x(0), y(0),z(0), w(1)
 	{
 	}
 		
-	inline Quaternion(float _x, float _y, float _z, float _w):
+	Quaternion(float _x, float _y, float _z, float _w):
 		x(_x), y(_y), z(_z), w(_w)
 	{
 	}
 		
-	Quaternion(const Vector3f& axis, float angle);
+	Quaternion(const Vector3f &axis, float angle);
 
-	inline bool operator==(const Quaternion &r) const
+	bool operator==(const Quaternion &r) const
 	{
 		return x==r.x && y==r.y && z==r.z && w==r.w;
 	}
 	
-	inline bool operator!=(const Quaternion &r) const
+	bool operator!=(const Quaternion &r) const
 	{
 		return !operator==(r);
 	}
 
-	inline Quaternion operator-() const
+	Quaternion operator-() const
 	{
 		return Quaternion(-x,-y,-z,-w);
 	}
 	
-	inline const Quaternion& operator+=(const Quaternion &r)
+	const Quaternion& operator+=(const Quaternion &r)
 	{
 		w += r.w;
 		x += r.x;
@@ -58,7 +58,7 @@ public:
 		return *this;
 	}
 	
-	inline Quaternion& operator-=(const Quaternion &r)
+	Quaternion& operator-=(const Quaternion &r)
 	{
 		w -= r.w;
 		x -= r.x;
@@ -68,7 +68,7 @@ public:
 		return *this;
 	}
 	
-	inline const Quaternion& operator*=(const Quaternion &r)
+	const Quaternion& operator*=(const Quaternion &r)
 	{
 		const float tw = (w * r.w) - (x * r.x) - (y * r.y) - (z * r.z);
 		const float tx = (x * r.w) + (w * r.x) + (y * r.z) - (z * r.y);
@@ -85,7 +85,7 @@ public:
 	
 	Quaternion& operator*=(const Vector3f &v);
 	
-	inline Quaternion& operator*=(float t)
+	Quaternion& operator*=(float t)
 	{
 		w *= t;
 		x *= t;
@@ -95,7 +95,7 @@ public:
 		return *this;
 	}
 
-	inline Quaternion operator*(const Quaternion& rhs) const
+	Quaternion operator*(const Quaternion &rhs) const
 	{
 		Quaternion ret(*this);
 
@@ -104,7 +104,7 @@ public:
 		return ret;
 	}
 	
-	inline Quaternion operator*(float t) const
+	Quaternion operator*(float t) const
 	{
 		Quaternion ret(*this);
 
@@ -113,19 +113,20 @@ public:
 		return ret;
 	}
 	
-	Quaternion operator*(const Vector3f& v) const;
+	Quaternion operator*(const Vector3f &v) const;
 	
-	Quaternion operator+(const Quaternion& rhs) const
+	Quaternion operator+(const Quaternion &rhs) const
 	{	
-		Quaternion ret(rhs);
+		Quaternion ret(*this);
 
 		ret+=rhs;
 
 		return ret;
 	}
+	
 	Quaternion operator-(const Quaternion& rhs) const
 	{
-		Quaternion ret(rhs);
+		Quaternion ret(*this);
 
 		ret-=rhs;
 
@@ -133,7 +134,7 @@ public:
 	}
 	
 	/// Normalises this quaternion
-	inline void normalise()
+	void normalise()
 	{
 		float length = sqrtf(x * x + y * y + z * z + w * w);
 
@@ -144,7 +145,7 @@ public:
 	}
 
 	// apply to non-zero quaternion
-	inline Quaternion inverse () const
+	Quaternion inverse () const
 	{
 		float fNorm = w*w+x*x+y*y+z*z;
 		if ( fNorm > 0.0 )
@@ -159,7 +160,7 @@ public:
 		}
 	}
 	
-	inline Quaternion exp () const
+	Quaternion exp () const
 	{
 		// If q = A*(x*i+y*j+z*k) where (x,y,z) is unit length, then
 		// exp(q) = cos(A)+sin(A)*(x*i+y*j+z*k).  If sin(A) is near zero,
@@ -188,7 +189,7 @@ public:
 		return kResult;
 	}
 	
-	inline Quaternion log () const
+	Quaternion log () const
 	{
 		// If q = cos(A)+sin(A)*(x*i+y*j+z*k) where (x,y,z) is unit length, then
 		// log(q) = A*(x*i+y*j+z*k).  If sin(A) is near zero, use log(q) =
@@ -219,7 +220,7 @@ public:
 	}
 	
 	//共轭四元数
-	inline Quaternion conjugate() const
+	Quaternion conjugate() const
 	{
 		Quaternion ret(-x, -y, -z, w);
 		return ret;
@@ -230,7 +231,7 @@ public:
 	
 	// functions of a quaternion
 	/// Returns the dot product of the quaternion
-	float dotProduct (const Quaternion& rkQ) const
+	float dotProduct (const Quaternion &rkQ) const
 	{
 		return w*rkQ.w+x*rkQ.x+y*rkQ.y+z*rkQ.z;
 	}
@@ -249,7 +250,7 @@ public:
 		if your scene relies on the timing of the rotation or assumes it will point
 		at a specific angle at a specific weight value, Slerp is a better choice.
 	*/
-	static Quaternion nlerp(float fT, const Quaternion& rkP,const Quaternion& rkQ, bool shortestPath = false);
+	static Quaternion nlerp(float fT, const Quaternion &rkP,const Quaternion &rkQ, bool shortestPath = false);
 	
 	/** Performs Spherical linear interpolation between two quaternions, and returns the result.
 		Slerp ( 0.0f, A, B ) = A
@@ -263,11 +264,11 @@ public:
 		therefore be careful if your code relies in the order of the operands.
 		This is specially important in IK animation.
 	*/
-	static Quaternion slerp(float fT, const Quaternion& rkP,const Quaternion& rkQ, bool shortestPath = false);
+	static Quaternion slerp(float fT, const Quaternion &rkP,const Quaternion &rkQ, bool shortestPath = false);
 
 	// spherical quadratic interpolation
-	static Quaternion squad (float fT,	const Quaternion& rkP, const Quaternion& rkA,
-							const Quaternion& rkB, const Quaternion& rkQ, bool shortestPath = false);
+	static Quaternion squad (float fT,	const Quaternion &rkP, const Quaternion &rkA,
+							const Quaternion &rkB, const Quaternion &rkQ, bool shortestPath = false);
 	};
 }
 

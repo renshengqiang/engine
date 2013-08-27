@@ -5,6 +5,8 @@
 #include <EngineSceneManager.h>
 #include <EngineCamera.h>
 #include <EngineRaySceneQuery.h>
+#include <EngineAnimation.h>
+#include <EngineAnimationState.h>
 #include <SDL/SDL.h>
 
 using namespace Engine;
@@ -30,6 +32,7 @@ private:
 	SceneManager *mp_sceneManager;
 	Camera	*mp_camera;
 	RaySceneQuery *mp_raySceneQuery;
+	AnimationState *mp_nodeState1;
 };
 
 #endif
